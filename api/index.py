@@ -55,6 +55,11 @@ def scrape_news_headlines():
     return headlines_and_images
 
 
+@app.route('/')
+def home():
+    return 'Password Generator and Checker!'
+
+
 @app.route('/api/news', methods=['GET'])
 def get_news():
     headlines = scrape_news_headlines()
