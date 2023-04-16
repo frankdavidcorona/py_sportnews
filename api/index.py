@@ -51,7 +51,7 @@ def scrape_news_headlines():
 
         # Find all 'p' elements within the 'article' and extract their text
         paragraphs = article.find_all('p')
-        paragraph_texts = [sanitize_text(p.get_text()) for p in paragraphs]
+        paragraph_texts = [sanitize_text(p.get_text()) for p in paragraphs if len(p.get_text()) >= 25]
 
         articles_data.append({
             'headline': headline,
