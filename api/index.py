@@ -51,10 +51,18 @@ def scrape_news_headlines():
         if img is not None:
             img_url = img.get('src')
 
+        # Skip the article if the image URL is undefined or null
+        if img_url is None:
+            continue
+
         # Find all 'p' elements within the 'article' and extract their text
         paragraphs = article.find_all('p')
         paragraph_texts = [sanitize_text(p.get_text(
         )) for p in paragraphs if p.get_text().strip() and len(p.get_text()) >= 25]
+
+        # Skip the article if the list of paragraphs is empty
+        if not paragraph_texts:
+            continue
 
         articles_data.append({
             'headline': headline,
