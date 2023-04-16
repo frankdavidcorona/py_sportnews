@@ -43,15 +43,18 @@ def scrape_news_headlines():
 
         # Find the 'figure' element within the 'article' and extract the image URL
         figure = article.find('figure')
+        if figure is None:
+            continue
+
         img_url = None
-        if figure is not None:
-            img = figure.find('img')
-            if img is not None:
-                img_url = img.get('src')
+        img = figure.find('img')
+        if img is not None:
+            img_url = img.get('src')
 
         # Find all 'p' elements within the 'article' and extract their text
         paragraphs = article.find_all('p')
-        paragraph_texts = [sanitize_text(p.get_text()) for p in paragraphs if len(p.get_text()) >= 25]
+        paragraph_texts = [sanitize_text(p.get_text(
+        )) for p in paragraphs if p.get_text().strip() and len(p.get_text()) >= 25]
 
         articles_data.append({
             'headline': headline,
