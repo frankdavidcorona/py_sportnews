@@ -23,11 +23,11 @@ def sanitize_text(text):
 
 
 def scrape_news_headlines():
-    url = 'https://www.as.com'
+    url = 'https://as.com/futbol/primera/?omnil=mpal'
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
 
-    headlines_and_images = []
+    articles_data = []
 
     # Find all 'article' elements
     articles = soup.find_all('article')
@@ -49,10 +49,17 @@ def scrape_news_headlines():
             if img is not None:
                 img_url = img.get('src')
 
-        headlines_and_images.append(
-            {'headline': headline, 'image_url': img_url})
+        # Find all 'p' elements within the 'article' and extract their text
+        paragraphs = article.find_all('p')
+        paragraph_texts = [sanitize_text(p.get_text()) for p in paragraphs]
 
-    return headlines_and_images
+        articles_data.append({
+            'headline': headline,
+            'image_url': img_url,
+            'paragraphs': paragraph_texts
+        })
+
+    return articles_data
 
 
 @app.route('/')
